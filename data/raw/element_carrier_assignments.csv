@@ -1,0 +1,8 @@
+name,formula,category,carrier_element,carrier_block,carrier_Z,carrier_group,carrier_period,carrier_mass,include_study04,e2,e3,e5,e7,notes
+Pb,Pb,SC_TypeI,Pb,p,82,14,6,207.2,1,1.0,0.0,0.0,0.0,"elemental type-I SC"
+Sn,Sn,SC_TypeI,Sn,p,50,14,5,118.71,1,1.0,0.0,0.0,0.0,"elemental type-I SC"
+FeSe,FeSe,SC_IronBased,Fe,d,26,8,4,55.845,1,0.64,0.27,0.18,0.27,"iron-based SC, carrier = Fe"
+LaH10,LaH10,SC_HighPressure,La,f,57,3,6,138.905,1,1.25,0.15,0.20,0.10,"high-pressure hydride, carrier = La"
+Nb3Sn,Nb3Sn,SC_Binary,Nb,d,41,5,5,92.906,1,1.18,0.06,0.00,0.12,"A15 compound, carrier = Nb"
+(BEDT-TTF)2Cu(NCS)2,(BEDT-TTF)2Cu(NCS)2,SC_Molecular,,, , , , ,0,0.0,0.0,0.0,0.0,"organic SC, excluded"
+He,He,Superfluid,He,s,2,18,1,4.003,0,0.0,0.0,0.0,0.0,"He-II, excluded from periodic resonance analysis"
