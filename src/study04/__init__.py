@@ -8,7 +8,9 @@ and generate the Resonance Periodic Table visualizations.
 
 from .data import (
     PRIME_COLUMNS,
+    ALLOWED_CATEGORIES,
     load_material_data,
+    apply_inclusion_rules,
     filter_included_rows,
     aggregate_element_table,
 )
@@ -28,7 +30,9 @@ from .plots import (
 
 __all__ = [
     "PRIME_COLUMNS",
+    "ALLOWED_CATEGORIES",
     "load_material_data",
+    "apply_inclusion_rules",
     "filter_included_rows",
     "aggregate_element_table",
     "compute_block_statistics",

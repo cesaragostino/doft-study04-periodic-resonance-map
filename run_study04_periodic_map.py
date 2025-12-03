@@ -3,9 +3,7 @@
 End-to-end runner for DOFT Study 04 – Periodic Resonance Map.
 
 Example:
-    python run_study04_periodic_map.py \
-        --config data/raw/element_carrier_assignments.csv \
-        --n-min 1
+    python run_study04_periodic_map.py         --config data/raw/element_carrier_assignments.csv         --n-min 1
 """
 
 from __future__ import annotations
@@ -13,12 +11,19 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import sys
 from pathlib import Path
 
 import numpy as np
 
-from study04 import (
+ROOT = Path(__file__).resolve().parent
+SRC_DIR = ROOT / "src"
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from study04 import (  # noqa: E402
     aggregate_element_table,
+    apply_inclusion_rules,
     compute_atomic_resonance_matrix,
     compute_block_statistics,
     load_material_data,
@@ -30,7 +35,7 @@ from study04 import (
     run_permutation_nulls,
     run_rotation_nulls,
 )
-from study04.analysis import serialize_block_statistics
+from study04.analysis import serialize_block_statistics  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
@@ -89,6 +94,7 @@ def main() -> None:
 
     logging.info("Loading material data from %s", args.config)
     material_df = load_material_data(args.config)
+    material_df = apply_inclusion_rules(material_df, logger=logging.getLogger(__name__))
     agg_result = aggregate_element_table(material_df)
     for warning in agg_result.warnings:
         logging.warning(warning)

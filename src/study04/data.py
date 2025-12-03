@@ -2,26 +2,84 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, List, Optional
+from typing import List, Optional, Set
 
-import numpy as np
 import pandas as pd
 
 PRIME_COLUMNS: List[str] = ["e2", "e3", "e5", "e7"]
 
+ALLOWED_CATEGORIES: Set[str] = {
+    "SC_Binary",
+    "SC_HighPressure",
+    "SC_IronBased",
+    "SC_Oxide",
+    "SC_TypeI",
+    "SC_TypeII",
+    "SC_HeavyFermion",
+}
+
 
 @dataclass
 class AggregationResult:
-    table: pd.DataFrame
+    table: 'pd.DataFrame'
     warnings: List[str]
 
 
-def load_material_data(path: Path | str) -> pd.DataFrame:
+def load_material_data(path: Path | str) -> 'pd.DataFrame':
     """Load the curated material-level CSV."""
     return pd.read_csv(Path(path))
 
 
-def filter_included_rows(df: pd.DataFrame) -> pd.DataFrame:
+def apply_inclusion_rules(df: 'pd.DataFrame', logger=None) -> 'pd.DataFrame':
+    """Compute include_study04 deterministically and log decisions."""
+    df = df.copy()
+    log_fn = logger.info if logger is not None else print
+
+    for idx, row in df.iterrows():
+        reasons: List[str] = []
+
+        carrier_element = None if pd.isna(row.get("carrier_element")) else str(row.get("carrier_element")).strip()
+        carrier_block = None if pd.isna(row.get("carrier_block")) else str(row.get("carrier_block")).strip()
+        category = row.get("category")
+
+        if not carrier_element:
+            reasons.append("missing_carrier_element")
+
+        if carrier_block not in {"s", "p", "d", "f"}:
+            reasons.append("invalid_carrier_block")
+
+        if category not in ALLOWED_CATEGORIES:
+            reasons.append(f"category_not_allowed:{category}")
+
+        primes = [row.get(p) for p in PRIME_COLUMNS]
+        all_nan = all(pd.isna(p) for p in primes)
+        all_zeroish = all((pd.isna(p) or p == 0) for p in primes)
+
+        if all_nan:
+            reasons.append("all_primes_nan")
+        elif all_zeroish:
+            reasons.append("all_primes_zero")
+
+        if reasons:
+            include = 0
+            reason_str = ",".join(reasons)
+            log_fn(f"[EXCLUDED][{reason_str}] name={row.get('name')}")
+        else:
+            include = 1
+            log_fn(
+                f"[INCLUDED] name={row.get('name')} carrier={carrier_element} block={carrier_block} category={category}"
+            )
+
+        df.at[idx, "include_study04"] = include
+
+    included = int((df["include_study04"] == 1).sum())
+    excluded = int((df["include_study04"] == 0).sum())
+    log_fn(f"[SUMMARY] included={included} excluded={excluded} total={len(df)}")
+
+    return df
+
+
+def filter_included_rows(df: 'pd.DataFrame') -> 'pd.DataFrame':
     """Keep rows flagged for Study 04 with valid carrier information."""
     mask = (
         (df["include_study04"] == 1)
@@ -31,14 +89,14 @@ def filter_included_rows(df: pd.DataFrame) -> pd.DataFrame:
     return df.loc[mask].copy()
 
 
-def _coerce_optional_numeric(series: pd.Series) -> Optional[float]:
+def _coerce_optional_numeric(series: 'pd.Series') -> Optional[float]:
     numeric = pd.to_numeric(series, errors="coerce")
     if numeric.isna().all():
         return None
     return float(numeric.median())
 
 
-def _coerce_optional_mode(series: pd.Series) -> Optional[float]:
+def _coerce_optional_mode(series: 'pd.Series') -> Optional[float]:
     """Pick the most frequent non-null value if present."""
     series = series.dropna()
     if series.empty:
@@ -46,7 +104,7 @@ def _coerce_optional_mode(series: pd.Series) -> Optional[float]:
     return series.mode().iloc[0]
 
 
-def aggregate_element_table(df: pd.DataFrame) -> AggregationResult:
+def aggregate_element_table(df: 'pd.DataFrame') -> AggregationResult:
     """
     Aggregate material-level fingerprints at the carrier-element level.
 
@@ -74,7 +132,6 @@ def aggregate_element_table(df: pd.DataFrame) -> AggregationResult:
             "n_materials": int(len(group)),
         }
 
-        # Optional descriptors propagated for plotting/metadata.
         if "carrier_Z" in group:
             z_val = _coerce_optional_numeric(group["carrier_Z"])
             if z_val is not None:
@@ -103,7 +160,6 @@ def aggregate_element_table(df: pd.DataFrame) -> AggregationResult:
         records.append(record)
 
     table = pd.DataFrame.from_records(records)
-    # Ensure predictable column order.
     prime_cols: List[str] = []
     for prime in PRIME_COLUMNS:
         prime_cols.extend(

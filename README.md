@@ -9,7 +9,7 @@ tests (including null models), and produces both tabular outputs and figures.
 - Specs for Study 04 in `docs/`.
 - Curated input example: `data/raw/element_carrier_assignments.csv`.
 - Main runner: `run_study04_periodic_map.py`.
-- Processing utilities: `study04/` (aggregation, stats, nulls, plots).
+- Processing utilities: `src/study04/` (aggregation, stats, nulls, plots).
 - Outputs land in `data/processed/` (CSV/JSON/PNG).
 
 ## Setup
@@ -44,9 +44,11 @@ Key flags:
 
 ## Notes and assumptions
 - Study 04 **does not** recompute carrier assignments; it trusts the curated CSV columns `carrier_element` and `carrier_block`.
+- `include_study04` is recalculated deterministically: allowed categories (SC_Binary, SC_HighPressure, SC_IronBased, SC_Oxide, SC_TypeI, SC_TypeII, SC_HeavyFermion), valid carrier element/block, and non-null/non-zero fingerprints; exclusions log to console with reasons.
 - Absolute values of fingerprints are used (`|e_n|`), per spec.
 - Classification uses logistic regression with cross-validation (LOO when samples are small) and reports accuracy/balanced accuracy/ROC-AUC vs a majority baseline.
 - Null model 1 permutes block labels; null model 2 rotates prime space with random orthogonal matrices.
+- Set `PYTHONPATH=src` (or install as a package) if you add new scripts so they can import `study04`.
 
 ## Data expectations
 Input CSV schema (minimum):
