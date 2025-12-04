@@ -61,3 +61,15 @@ name,formula,category,carrier_element,carrier_block,carrier_Z,include_study04,
 e2,e3,e5,e7,notes
 ```
 Extra columns like `carrier_group` and `carrier_period` are optional but used for plotting if present.
+
+## Study 04 v2 – Layer Inference Engine
+Prep, match topologías y figuras nuevas:
+
+```bash
+python prep_study04_layer_data.py
+python run_study04_infer_topologies_e_only.py
+python run_study04_infer_topologies.py
+```
+- Input esperados: `data/raw/config_fingerprint_summary.csv`, `data/raw/element_carrier_assignments.csv`, `data/raw/structural_noise_summary.csv`, `data/raw/participation_summary.csv`, catálogo `data/raw/layer1_topology_catalog.json`, hiperparámetros `data/raw/study04_hyperparams.json` (`lambda_noise=0.5`).
+- Outputs clave: `data/processed/carrier_aggregate_stats.csv`, `carrier_topology_assignments_e_only.csv`, `carrier_topology_assignments.csv`, figuras en `data/processed/figures/study04/`.
+- Consola muestra INCLUDED/EXCLUDED, warnings y resumen QC/topologías para seguir el cálculo en tiempo real.

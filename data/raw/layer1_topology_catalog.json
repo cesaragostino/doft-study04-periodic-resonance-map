@@ -1,0 +1,52 @@
+[
+  {
+    "topology_id": "BIN_DIPOLE",
+    "name": "Binary dipole",
+    "n_nodes": 2,
+    "w2": 0.90,
+    "w3": 0.05,
+    "w5": 0.03,
+    "w7": 0.02,
+    "noise_sensitivity": 0.2
+  },
+  {
+    "topology_id": "TRI_RING",
+    "name": "Triangular ring",
+    "n_nodes": 3,
+    "w2": 0.10,
+    "w3": 0.80,
+    "w5": 0.05,
+    "w7": 0.05,
+    "noise_sensitivity": 0.4
+  },
+  {
+    "topology_id": "TETRA_PACK",
+    "name": "Tetra-pack",
+    "n_nodes": 4,
+    "w2": 0.60,
+    "w3": 0.30,
+    "w5": 0.05,
+    "w7": 0.05,
+    "noise_sensitivity": 0.5
+  },
+  {
+    "topology_id": "PENTA_FLOWER",
+    "name": "Penta flower",
+    "n_nodes": 5,
+    "w2": 0.35,
+    "w3": 0.10,
+    "w5": 0.45,
+    "w7": 0.10,
+    "noise_sensitivity": 0.7
+  },
+  {
+    "topology_id": "HEPTA_FLOWER",
+    "name": "Hepta flower",
+    "n_nodes": 7,
+    "w2": 0.30,
+    "w3": 0.05,
+    "w5": 0.25,
+    "w7": 0.40,
+    "noise_sensitivity": 0.9
+  }
+]
