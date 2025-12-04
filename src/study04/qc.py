@@ -227,7 +227,7 @@ def run_fingerprint_qc(
                 if w:
                     _flag(warnings_by_type, w)
             log_fn(
-                f"{row.get('name')} [WARN][{warns}] carrier={row.get('carrier_element')} category={row.get('category')}"
+                f"[WARN][{warns}] name={row.get('name')} carrier={row.get('carrier_element')} category={row.get('category')}"
             )
         if errs:
             # errors already logged during level 1
@@ -276,6 +276,10 @@ def run_fingerprint_qc(
             "errors_by_type": summary.errors_by_type,
             "warnings_by_type": summary.warnings_by_type,
         }).to_json(indent=2)
+    )
+    log_fn(
+        f"[SUMMARY_QC] included={summary.included_count} excluded={summary.excluded_count} "
+        f"warned_included={summary.warned_included_count} total={summary.total_materials}"
     )
 
     # Stop pipeline if any included material has errors

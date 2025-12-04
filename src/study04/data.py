@@ -35,6 +35,9 @@ def apply_inclusion_rules(df: pd.DataFrame, logger=None) -> pd.DataFrame:
     df = df.copy()
     log_fn = logger.info if logger is not None else print
 
+    included_msgs: List[str] = []
+    excluded_msgs: List[str] = []
+
     for idx, row in df.iterrows():
         reasons: List[str] = []
 
@@ -63,14 +66,23 @@ def apply_inclusion_rules(df: pd.DataFrame, logger=None) -> pd.DataFrame:
         if reasons:
             include = 0
             reason_str = ",".join(reasons)
-            log_fn(f"[EXCLUDED][{reason_str}] name={row.get('name')}")
+            excluded_msgs.append(
+                f"[EXCLUDED][{reason_str}] name={row.get('name')} carrier={carrier_element} "
+                f"block={carrier_block} category={category}"
+            )
         else:
             include = 1
-            log_fn(
+            included_msgs.append(
                 f"[included] name={row.get('name')} carrier={carrier_element} block={carrier_block} category={category}"
             )
 
         df.at[idx, "include_study04"] = include
+
+    # Emit logs: included first, excluded last
+    for msg in included_msgs:
+        log_fn(msg)
+    for msg in excluded_msgs:
+        log_fn(msg)
 
     included = int((df["include_study04"] == 1).sum())
     excluded = int((df["include_study04"] == 0).sum())
