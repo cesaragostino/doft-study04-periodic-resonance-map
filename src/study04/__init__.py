@@ -27,6 +27,7 @@ from .plots import (
     plot_classifier_roc,
     plot_materials_histogram,
 )
+from .qc import run_fingerprint_qc
 
 __all__ = [
     "PRIME_COLUMNS",
@@ -45,4 +46,5 @@ __all__ = [
     "plot_scatter_primes",
     "plot_classifier_roc",
     "plot_materials_histogram",
+    "run_fingerprint_qc",
 ]

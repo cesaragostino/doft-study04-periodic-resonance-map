@@ -34,6 +34,7 @@ from study04 import (  # noqa: E402
     plot_scatter_primes,
     run_permutation_nulls,
     run_rotation_nulls,
+    run_fingerprint_qc,
 )
 from study04.analysis import serialize_block_statistics  # noqa: E402
 
@@ -95,6 +96,10 @@ def main() -> None:
     logging.info("Loading material data from %s", args.config)
     material_df = load_material_data(args.config)
     material_df = apply_inclusion_rules(material_df, logger=logging.getLogger(__name__))
+
+    # Fingerprint QC prior to aggregation
+    run_fingerprint_qc(material_df, logger=logging.getLogger(__name__), output_dir=args.output_dir)
+
     agg_result = aggregate_element_table(material_df)
     for warning in agg_result.warnings:
         logging.warning(warning)

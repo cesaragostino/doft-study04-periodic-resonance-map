@@ -21,16 +21,16 @@ ALLOWED_CATEGORIES: Set[str] = {
 
 @dataclass
 class AggregationResult:
-    table: 'pd.DataFrame'
+    table: pd.DataFrame
     warnings: List[str]
 
 
-def load_material_data(path: Path | str) -> 'pd.DataFrame':
+def load_material_data(path: Path | str) -> pd.DataFrame:
     """Load the curated material-level CSV."""
     return pd.read_csv(Path(path))
 
 
-def apply_inclusion_rules(df: 'pd.DataFrame', logger=None) -> 'pd.DataFrame':
+def apply_inclusion_rules(df: pd.DataFrame, logger=None) -> pd.DataFrame:
     """Compute include_study04 deterministically and log decisions."""
     df = df.copy()
     log_fn = logger.info if logger is not None else print
@@ -67,7 +67,7 @@ def apply_inclusion_rules(df: 'pd.DataFrame', logger=None) -> 'pd.DataFrame':
         else:
             include = 1
             log_fn(
-                f"[INCLUDED] name={row.get('name')} carrier={carrier_element} block={carrier_block} category={category}"
+                f"[included] name={row.get('name')} carrier={carrier_element} block={carrier_block} category={category}"
             )
 
         df.at[idx, "include_study04"] = include
@@ -79,7 +79,7 @@ def apply_inclusion_rules(df: 'pd.DataFrame', logger=None) -> 'pd.DataFrame':
     return df
 
 
-def filter_included_rows(df: 'pd.DataFrame') -> 'pd.DataFrame':
+def filter_included_rows(df: pd.DataFrame) -> pd.DataFrame:
     """Keep rows flagged for Study 04 with valid carrier information."""
     mask = (
         (df["include_study04"] == 1)
@@ -89,14 +89,14 @@ def filter_included_rows(df: 'pd.DataFrame') -> 'pd.DataFrame':
     return df.loc[mask].copy()
 
 
-def _coerce_optional_numeric(series: 'pd.Series') -> Optional[float]:
+def _coerce_optional_numeric(series: pd.Series) -> Optional[float]:
     numeric = pd.to_numeric(series, errors="coerce")
     if numeric.isna().all():
         return None
     return float(numeric.median())
 
 
-def _coerce_optional_mode(series: 'pd.Series') -> Optional[float]:
+def _coerce_optional_mode(series: pd.Series) -> Optional[float]:
     """Pick the most frequent non-null value if present."""
     series = series.dropna()
     if series.empty:
@@ -104,7 +104,7 @@ def _coerce_optional_mode(series: 'pd.Series') -> Optional[float]:
     return series.mode().iloc[0]
 
 
-def aggregate_element_table(df: 'pd.DataFrame') -> AggregationResult:
+def aggregate_element_table(df: pd.DataFrame) -> AggregationResult:
     """
     Aggregate material-level fingerprints at the carrier-element level.
 
@@ -132,6 +132,7 @@ def aggregate_element_table(df: 'pd.DataFrame') -> AggregationResult:
             "n_materials": int(len(group)),
         }
 
+        # Optional descriptors propagated for plotting/metadata.
         if "carrier_Z" in group:
             z_val = _coerce_optional_numeric(group["carrier_Z"])
             if z_val is not None:

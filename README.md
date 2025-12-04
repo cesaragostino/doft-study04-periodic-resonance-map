@@ -29,6 +29,8 @@ python run_study04_periodic_map.py \
   --n-rotations 0
 ```
 
+QC runs automatically at start; to just verify data you can run the same command with `--n-perm 0 --n-rotations 0` to skip heavy nulls and stop if any included material has errors.
+
 Key flags:
 - `--n-min` controls the robustness filter `n_materials >= N_min` (spec recommends 2–3; the sample data has only 1 per element, so use `--n-min 1` to reproduce the example outputs).
 - `--prime-metric` chooses `mean` or `median` for the prime vector.
@@ -36,6 +38,8 @@ Key flags:
 - `--n-rotations` random prime-space rotations (set >0 to run the optional null; default skips).
 
 ## Main outputs (data/processed/)
+- `fingerprint_qc_per_material.csv`: per-material QC flags (errors/warnings) for included rows.
+- `fingerprint_qc_summary.json`: aggregated QC counts.
 - `periodic_resonance_table.csv`: element-level aggregation (n_materials, block, Z/group/period if provided, prime means/medians/std).
 - `atomic_resonance_matrix.csv`: correlation between block one-hots and prime magnitudes.
 - `study04_block_stats.json`: Mann–Whitney + Cliff’s Δ for Tests 1–2, classifier metrics for (s+p) vs (d+f), permutation + rotation null summaries.
@@ -43,7 +47,7 @@ Key flags:
 - `figures/prime_boxplots.png`, `figures/prime_scatter.png`, `figures/classifier_roc.png`, `figures/materials_hist.png`.
 
 ## Notes and assumptions
-- Study 04 **does not** recompute carrier assignments; it trusts the curated CSV columns `carrier_element` and `carrier_block`.
+- Study 04 **does not** recompute carrier assignments; it trusts the curated CSV columns `carrier_element` and `carrier_block` (recomputed `include_study04` plus QC checks happen before aggregation).
 - `include_study04` is recalculated deterministically: allowed categories (SC_Binary, SC_HighPressure, SC_IronBased, SC_Oxide, SC_TypeI, SC_TypeII, SC_HeavyFermion), valid carrier element/block, and non-null/non-zero fingerprints; exclusions log to console with reasons.
 - Absolute values of fingerprints are used (`|e_n|`), per spec.
 - Classification uses logistic regression with cross-validation (LOO when samples are small) and reports accuracy/balanced accuracy/ROC-AUC vs a majority baseline.
