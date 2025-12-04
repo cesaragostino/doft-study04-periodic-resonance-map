@@ -56,6 +56,12 @@ def plot_periodic_resonance_map(agg_df, output_path: Path, prime_metric: str = "
         df["x"] = (df.index % 10) + 1
         df["y"] = (df.index // 10) + 1
 
+    # Avoid overlapping cells: stack duplicates with a small vertical offset.
+    df["stack_idx"] = df.groupby(["x", "y"]).cumcount()
+    df["y_plot"] = df["y"] + 0.25 * df["stack_idx"]
+    if df["stack_idx"].max() > 0:
+        fig.set_figwidth(fig.get_figwidth() * 1.2)
+
     max_mag = df["dominant_mag"].max()
     min_mag = df["dominant_mag"].min()
     span = max(max_mag - min_mag, 1e-6)
@@ -64,7 +70,7 @@ def plot_periodic_resonance_map(agg_df, output_path: Path, prime_metric: str = "
         color = PRIME_PALETTE.get(row["dominant_prime"], "#888888")
         intensity = 0.3 + 0.7 * ((row["dominant_mag"] - min_mag) / span)
         rect = plt.Rectangle(
-            (row["x"] - 0.5, row["y"] - 0.5),
+            (row["x"] - 0.5, row["y_plot"] - 0.5),
             1,
             1,
             facecolor=color,
@@ -74,7 +80,7 @@ def plot_periodic_resonance_map(agg_df, output_path: Path, prime_metric: str = "
         ax.add_patch(rect)
         ax.text(
             row["x"],
-            row["y"],
+            row["y_plot"],
             f"{row['element']}",
             ha="center",
             va="center",
@@ -84,7 +90,7 @@ def plot_periodic_resonance_map(agg_df, output_path: Path, prime_metric: str = "
         )
         ax.text(
             row["x"],
-            row["y"] - 0.25,
+            row["y_plot"] - 0.25,
             row["block"],
             ha="center",
             va="center",
@@ -93,7 +99,7 @@ def plot_periodic_resonance_map(agg_df, output_path: Path, prime_metric: str = "
         )
 
     ax.set_xlim(df["x"].min() - 1, df["x"].max() + 1)
-    ax.set_ylim(df["y"].max() + 1, df["y"].min() - 1)
+    ax.set_ylim(df["y_plot"].max() + 1, df["y_plot"].min() - 1)
     ax.invert_yaxis()
     ax.set_xticks([])
     ax.set_yticks([])

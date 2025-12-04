@@ -1,24 +1,24 @@
 {
-  "total_materials":249,
-  "checked_materials":200,
-  "included_count":200,
-  "excluded_count":49,
-  "warned_included_count":15,
+  "total_materials":246,
+  "checked_materials":223,
+  "included_count":223,
+  "excluded_count":23,
+  "warned_included_count":18,
   "errors_total":0,
-  "warnings_total":38,
+  "warnings_total":50,
   "errors_by_type":{
 
   },
   "warnings_by_type":{
-    "WARN_outlier_vs_carrier_e2":5,
-    "WARN_outlier_vs_carrier_e3":4,
-    "WARN_outlier_vs_carrier_e7":6,
-    "WARN_outlier_vs_carrier_multi":7,
-    "WARN_outlier_global_e3":2,
-    "WARN_outlier_vs_carrier_e5":7,
-    "WARN_outlier_global_e5":2,
-    "WARN_outlier_global_e2":2,
-    "WARN_outlier_global_e7":2,
-    "WARN_ambiguous_dominant_prime":1
+    "WARN_outlier_global_e2":3,
+    "WARN_outlier_global_e7":6,
+    "WARN_outlier_global_e3":3,
+    "WARN_outlier_vs_carrier_e2":6,
+    "WARN_outlier_vs_carrier_e5":8,
+    "WARN_outlier_vs_carrier_e7":7,
+    "WARN_outlier_vs_carrier_multi":9,
+    "WARN_outlier_vs_carrier_e3":5,
+    "WARN_outlier_global_e5":1,
+    "WARN_ambiguous_dominant_prime":2
   }
 }

@@ -1,78 +1,78 @@
 {
-  "n_elements": 58,
-  "n_elements_robust": 32,
+  "n_elements": 64,
+  "n_elements_robust": 36,
   "n_min": 2,
   "prime_metric": "mean",
   "tests": {
     "p_vs_df_e2": {
       "group_sizes": {
-        "a": 6,
-        "b": 22
+        "a": 7,
+        "b": 25
       },
-      "delta": 0.3106060606060606,
-      "p_value": 0.25971841091193937,
-      "median_diff": 0.05944444444444441
+      "delta": 0.30857142857142855,
+      "p_value": 0.22568842243009457,
+      "median_diff": 0.19227272727272715
     },
     "df_vs_sp_e5": {
       "group_sizes": {
-        "a": 22,
-        "b": 10
+        "a": 25,
+        "b": 11
       },
-      "delta": 0.05454545454545454,
-      "p_value": 0.8225024944092916,
-      "median_diff": 0.033333333333333354
+      "delta": 0.24,
+      "p_value": 0.2635748998804964,
+      "median_diff": 0.04999999999999999
     },
     "df_vs_sp_e7": {
       "group_sizes": {
-        "a": 22,
-        "b": 10
+        "a": 25,
+        "b": 11
       },
-      "delta": 0.42727272727272725,
-      "p_value": 0.05795180532451585,
-      "median_diff": 0.009999999999999995
+      "delta": 0.33090909090909093,
+      "p_value": 0.12184500943780252,
+      "median_diff": 0.0050000000000000044
     }
   },
   "classifier": {
-    "n_samples": 32,
-    "n_positive": 22,
-    "n_negative": 10,
-    "accuracy": 0.4375,
-    "balanced_accuracy": 0.5909090909090909,
-    "roc_auc": 0.5340909090909091,
-    "baseline_accuracy": 0.6875
+    "n_samples": 36,
+    "n_positive": 25,
+    "n_negative": 11,
+    "accuracy": 0.5277777777777778,
+    "balanced_accuracy": 0.6345454545454545,
+    "roc_auc": 0.5745454545454546,
+    "baseline_accuracy": 0.6944444444444444
   },
   "null_models": {
     "permutation": {
       "delta_e2_p_vs_df": {
-        "mean": NaN,
-        "std": NaN,
-        "p_value": null,
-        "z_score": null,
-        "real": 0.3106060606060606
+        "mean": -0.001647999999999999,
+        "std": 0.24836835431082657,
+        "p_value": 0.22395520895820836,
+        "z_score": 1.2490296093970046,
+        "real": 0.30857142857142855
       },
       "delta_e5_df_vs_sp": {
-        "mean": NaN,
-        "std": NaN,
-        "p_value": null,
-        "z_score": null,
-        "real": 0.05454545454545454
+        "mean": -0.005386181818181818,
+        "std": 0.21099744263420864,
+        "p_value": 0.2615476904619076,
+        "z_score": 1.162981781933682,
+        "real": 0.24
       },
       "delta_e7_df_vs_sp": {
-        "mean": NaN,
-        "std": NaN,
-        "p_value": null,
-        "z_score": null,
-        "real": 0.42727272727272725
+        "mean": 0.0017156363636363636,
+        "std": 0.21165949267055315,
+        "p_value": 0.11997600479904019,
+        "z_score": 1.555297380674735,
+        "real": 0.33090909090909093
       },
       "classifier_accuracy": {
-        "mean": NaN,
-        "std": NaN,
-        "p_value": null,
-        "z_score": null,
-        "real": 0.4375
+        "mean": 0.5075722222222223,
+        "std": 0.1159094860062527,
+        "p_value": 0.4501099780043991,
+        "z_score": 0.17432184587951235,
+        "real": 0.5277777777777778
       },
-      "n_perm": 0,
-      "n_elements": 32
+      "n_perm": 5000,
+      "n_elements": 36
     },
     "rotation": {
       "skipped_reason": "n_rotations set to 0."
