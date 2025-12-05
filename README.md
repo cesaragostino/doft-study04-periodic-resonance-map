@@ -73,3 +73,17 @@ python run_study04_infer_topologies.py
 - Input esperados: `data/raw/config_fingerprint_summary.csv`, `data/raw/element_carrier_assignments.csv`, `data/raw/structural_noise_summary.csv`, `data/raw/participation_summary.csv`, catálogo `data/raw/layer1_topology_catalog.json`, hiperparámetros `data/raw/study04_hyperparams.json` (`lambda_noise=0.5`).
 - Outputs clave: `data/processed/carrier_aggregate_stats.csv`, `carrier_topology_assignments_e_only.csv`, `carrier_topology_assignments.csv`, figuras en `data/processed/figures/study04/`.
 - Consola muestra INCLUDED/EXCLUDED, warnings y resumen QC/topologías para seguir el cálculo en tiempo real.
+
+## Study 04 – Atom Resonant Layer Engine (L1 inverso)
+Nuevo runner para el motor de capas con filtro por carrier o familia:
+
+```bash
+python3 run_study04_resonant_layer_engine.py --elements Fe,Ni --families d f
+# o todos
+python3 run_study04_resonant_layer_engine.py
+```
+- Entrada: `data/processed/carrier_aggregate_stats.csv` (sale de `prep_study04_layer_data.py`).
+- Catálogo: `data/raw/layer1_topology_catalog.json`.
+- Hiperparámetros: `data/raw/study04_hyperparams.json` (sigma_e, sigma_N, sigma_xi, lambda_N, lambda_xi, xi_env).
+- Salidas: `data/processed/element_topology_scores.csv`, `data/processed/element_topology_inference.csv`, figuras en `data/processed/figures/study04/topology_map_resonant.png` y `element_topology_match_matrix_resonant.png`.
+- Usa `--elements` (coma o espacio) y/o `--families` (s/p/d/f) para elegir qué carriers correr; `all` o vacío corren todo.

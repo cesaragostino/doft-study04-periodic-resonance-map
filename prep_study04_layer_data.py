@@ -73,6 +73,7 @@ def main():
             "carrier_period": grp.get("carrier_period", pd.Series([np.nan] * len(grp))).mode().iat[0] if "carrier_period" in grp else None,
             "carrier_Z": grp.get("carrier_Z", pd.Series([np.nan] * len(grp))).median() if "carrier_Z" in grp else None,
             "n_materials": len(grp),
+            "N_median": grp["N"].median() if "N" in grp else np.nan,
         }
         for p in PRIME_COLUMNS:
             vals = grp[p].abs().dropna()

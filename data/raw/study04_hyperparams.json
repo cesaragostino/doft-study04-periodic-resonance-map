@@ -1,3 +1,10 @@
 {
-  "lambda_noise": 0.5
+  "lambda_noise": 0.5,
+  "lambda_N": 0.5,
+  "lambda_xi": 0.5,
+  "sigma_e": 0.1,
+  "sigma_N": 1.0,
+  "sigma_xi": 0.5,
+  "k_core": 1.0,
+  "xi_env": 0.05
 }
